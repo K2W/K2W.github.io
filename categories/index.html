@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next mist use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -50,7 +50,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon?v=0.5.0" />
 
 
 
@@ -73,13 +73,13 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Muse',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
     duoshuo: {
-      userId: 0,
-      author: '博主'
+      userId: 6299719551663736000,
+      author: 'KtwooW'
     }
   };
 </script>
@@ -98,6 +98,16 @@
   
 
 
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?2e4f77dc0d62bee83766c92d3490c3d4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
 
 
 
@@ -138,7 +148,7 @@
   
 
   
-    <ul id="menu" class="menu ">
+    <ul id="menu" class="menu menu-left">
       
         
         <li class="menu-item menu-item-home">
@@ -190,6 +200,24 @@
   
 
   
+    <div class="site-search">
+      
+  <form class="site-search-form" >
+  <span class="fa fa-search"></span>
+  <input type="text" id="search-input">
+  <div id="search-result"><ul class="search-result-list"><li><a href="//www.baidu.com/s?wd=XXX%20site%3Ahttp://yoursite.com" class="search-result">百度搜索 <i class="search-keyword">XXX</i></a></li><li><a href="//www.google.com/search?q=XXX%20site%3Ahttp://yoursite.com" class="search-result">谷歌搜索 <i class="search-keyword">XXX</i></a></li><li><a href="#" class="popup-trigger search-result">本地搜索</a></li></ul>
+  </div>
+</form>
+ <div class="popup">
+  <span class="fa fa-search"></span>
+  <input type="text" id="local-search-input">
+  <div id="local-search-result"></div>
+  <span class="popup-btn-close">close</span>
+ </div>
+
+
+    </div>
+  
 </nav>
 
  </div>
@@ -222,6 +250,10 @@
 
           
   <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="categories/index.html"
+           data-title="categories" data-url="http://yoursite.com/categories/index.html">
+      </div>
     
   </div>
 
@@ -310,7 +342,7 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy; 
+  &copy;  2015 - 
   <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
@@ -325,7 +357,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Mist
   </a>
 </div>
 
@@ -388,14 +420,188 @@
 
   
 
+  
+    
+  
 
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"KtwooW"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
 
   
 
 
 
+
+
   
   
+  <script type="text/javascript">
+    // Popup Window;
+    var scrollTop = '';
+    var newHeight = '100';
+
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+
+    // monitor main search box;
+    $('#search-input').on('input', function() {
+    if ($(this).val().length <= 0) {
+      $('#search-result').hide();
+      return;
+    }
+    $('i.search-keyword').text($(this).val());
+    $('a.search-result[href!="#"]').each(function(){
+      this.href = this.href.replace(/\=(.*?)(?=%20site)/,'='+$('#search-input').val())
+    });
+    $('#search-result').show();
+    });
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    searchFunc = function(){};
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: false,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length <= 0) {
+                    return;
+                }
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 100;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substr(start, end); 
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                });
+                str += "</ul>";
+                $resultContent.innerHTML = str;
+            });
+        }
+    });}
+
+    // handle and trigger popup window;
+    $(window).bind('scroll', function() {
+      scrollTop = $( window ).scrollTop();
+      newHeight = scrollTop + 100;
+    });
+    $('#search-result a').mousedown(function(e) {
+        window.location.href = this.href;
+      });
+    $('.popup-trigger').mousedown(function(e) {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      $('#local-search-input').val($('#search-input').val());
+      document.getElementById('local-search-input').dispatchEvent(new Event('input'));
+      e.stopPropagation();
+      if(jQuery(window).width() < 750) {
+        $('.site-search-form').after( $( ".popup" ) );
+        $('.popup').show().addClass('popup-mobile').css('top', 0);
+        $('html, body').animate({
+          scrollTop: $('.popup').offset().top
+        }, 500);
+      } else {
+        $('.popup').removeClass('popup-mobile').css('top', newHeight).toggle();
+      };
+    });
+
+    $('#search-input').focus(function() {
+    if ($(this).val().length > 0) {
+      $('#search-result').show();
+      }
+    });
+    $('#search-input').blur(function() {
+      $('#search-result').hide();
+    });
+
+    $('html').click(function() {
+      $('.popup').hide();
+    });
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
   
 
   
